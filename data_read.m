@@ -12,7 +12,10 @@ temp2 = T.Var10;
 hum = T.Var11;
 accmin = T.Var17;
 
-
+[b, a] = butter(5,0.05);
+accfilt = filter(b, a, accmin);
+cla reset
+figure(1)
 t = tiledlayout(1,1);
 ax1 = axes(t);
 plot(ax1,temp1,alt, '.b')
@@ -31,9 +34,13 @@ ax1.Box = 'off';
 ax2.Box = 'off';
 
 xlabel("Vlhkost (%)")
-
 hold off
 
+
 figure(2)
-plot(accmin)
+plot(accmin, 'c-','LineWidth',0.1)
+hold on
+plot(accfilt, '.r','LineWidth',2)
+hold off
+
 
