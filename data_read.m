@@ -10,7 +10,7 @@ temp1 = T.Var8;
 press = T.Var9;
 temp2 = T.Var10;
 hum = T.Var11;
-accmin = T.Var15;
+accmin = T.Var17;
 
 
 t = tiledlayout(1,1);
