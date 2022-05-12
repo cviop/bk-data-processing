@@ -1,5 +1,5 @@
 opt = detectImportOptions('data_clean.txt');
-T = readtable('data_clean.txt', opt);
+T = readtable('data_clean.txt', opt)
 
 
 lat = T.Var2;
@@ -11,8 +11,13 @@ press = T.Var9;
 temp2 = T.Var10;
 hum = T.Var11;
 accmin = T.Var17;
+accx = T.Var18;
+accy = T.Var19;
+accz = T.Var20;
 
-[b, a] = butter(5,0.05);
+accznormal = 8750;
+
+[b, a] = butter(5,0.1);
 accfilt = filter(b, a, accmin);
 cla reset
 figure(1)
@@ -36,11 +41,21 @@ ax2.Box = 'off';
 xlabel("Vlhkost (%)")
 hold off
 
+ang = real(asin(accmin/accznormal));
 
 figure(2)
 plot(accmin, 'c-','LineWidth',0.1)
 hold on
 plot(accfilt, '.r','LineWidth',2)
+plot(accx)
+plot(accy)
+plot(accz)
+plot(alt*50-20000, '.-')
+ylim([-5000 20000])
+yline(accznormal)
 hold off
+
+figure(3)
+plot(90 - ang.*(180/pi))
 
 
