@@ -1,7 +1,7 @@
 opt = detectImportOptions('data_clean.txt');
 T = readtable('data_clean.txt', opt)
 
-
+time = T.Var1;
 lat = T.Var2;
 long = T.Var4;
 alt = T.Var6;
@@ -15,10 +15,17 @@ accx = T.Var18;
 accy = T.Var19;
 accz = T.Var20;
 
+y=num2str(time)
+st=num2str(time(1))
+start=str2num(st(:,[1:2]))*3600 + str2num(st(:,[3:4]))*60 + str2num(st(:,[5:6]));
+seconds=str2num(y(:,[1:2]))*3600 + str2num(y(:,[3:4]))*60 + str2num(y(:,[5:6]))-start;
+
+%sec=str2num(time(1:2))*3600+str2num(time(3:4))*60+str2num(time)
+
 accznormal = 8750;
 
 [b, a] = butter(5,0.1);
-accfilt = filter(b, a, accmin);
+accfilt = filtfilt(b, a, accmin);
 cla reset
 figure(1)
 t = tiledlayout(1,1);
@@ -43,19 +50,24 @@ hold off
 
 ang = real(asin(accmin/accznormal));
 
+%kdyz aktualni uhel = minimalni uhel - muzeme brat spravnou hodnotu
+
 figure(2)
-plot(accmin, 'c-','LineWidth',0.1)
+plot(seconds, accmin, 'c-','LineWidth',0.1)
 hold on
-plot(accfilt, '.r','LineWidth',2)
-plot(accx)
-plot(accy)
-plot(accz)
-plot(alt*50-20000, '.-')
+plot(seconds, accfilt, '.r','LineWidth',2)
+plot(seconds, accx)
+plot(seconds, accy)
+plot(seconds, accz)
+plot(seconds, alt*50-20000, '.-')
 ylim([-5000 20000])
 yline(accznormal)
 hold off
 
 figure(3)
-plot(90 - ang.*(180/pi))
+plot(seconds, 90 - ang.*(180/pi))
+
+figure(4)
+plot(seconds, alt, '.')
 
 

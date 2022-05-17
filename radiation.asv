@@ -1,0 +1,32 @@
+rad0 = load("Data/QHA_LH_0deg.mat")
+radm45 = load("Data/QHA_LH_-45deg.mat")
+rad45 = load("Data/QHA_LH_45deg.mat")
+rad90 = load("Data/QHA_LH_90deg.mat")
+
+flip(rad0.ampl)
+flip(rad45.ampl)
+flip(rad90.ampl)
+
+ampl = [rad0.ampl, radm45.ampl, rad45.ampl, rad90.ampl];
+phi = [rad0.phi', radm45.phi', rad45.phi', rad90.phi'];
+theta = [zeros(361,1)'+0, zeros(361,1)'-45, zeros(361,1)'+45 zeros(361,1)'+90];
+
+figure(1)
+polarplot(rad0.phi.*pi/180, rad0.ampl)
+hold on
+rlim([-100 5])
+hold off
+
+%[theta, phi] = meshgrid(theta, phi);
+
+%[x,y,z] = sph2cart(theta, phi, ampl);
+%mesh(x,y,z)
+
+figure(2)
+patternCustom(ampl, theta, phi,'CoordinateSystem','polar','Slice','theta','SliceValue',0)
+hold on
+patternCustom(ampl, theta, phi,'CoordinateSystem','polar','Slice','theta','SliceValue',-45)
+patternCustom(ampl, theta, phi,'CoordinateSystem','polar','Slice','theta','SliceValue',45)
+patternCustom(ampl, theta, phi,'CoordinateSystem','polar','Slice','theta','SliceValue',90)
+legend('cos(x)','cos(2x)')
+hold off
