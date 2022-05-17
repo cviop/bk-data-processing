@@ -1,51 +1,65 @@
 f = readNPY('Data/Power_measurement_1651664034.3606765.npy');
 s = readNPY('Data/Power_measurement_1651664833.231332.npy');
 
-opt = detectImportOptions('data_clean.txt');
-T = readtable('data_clean.txt', opt)
+opt = detectImportOptions('data_clean_long.txt');
+T = readtable('data_clean_long.txt', opt)
+
+time= T.Var1;
+hum = T.Var11;
+alt = T.Var6;
 
 y=num2str(time);
 st=num2str(time(1));
 start=str2num(st(:,[1:2]))*3600 + str2num(st(:,[3:4]))*60 + str2num(st(:,[5:6]));
-seconds=str2num(y(:,[1:2]))*3600 + str2num(y(:,[3:4]))*60 + str2num(y(:,[5:6]))-start;
+seconds=str2num(y(:,[1:2]))*3600 + str2num(y(:,[3:4]))*60 + str2num(y(:,[5:6]));
 
 
 
 
-hum = T.Var11;
-alt = T.Var6;
 
 p=f(:,2)';
 q=s(:,2)';
 
-all=[q, p]';
-all(end+1:max(seconds))=-120;
+all=[p, q]';
+
 
 [b, a] = butter(5, 0.05);
 
-all = circshift(all,(size(f)+size(s))-max(time));
+
 
 filt = filtfilt(b, a, all);
 
 
-timeF = f(:,[1])-f(1);
-timeS = s(:,[1])-f(1);
+timeF = f(:,[1]);
+timeS = s(:,[1]);
+timePow = [timeF', timeS']';
+d=datetime(timePow(:,[1]),'convertfrom', 'posixtime');
 
-d=datetime(s(:,[1]),'convertfrom', 'posixtime', 'Format', 'HH:mm:ss')
+formatOut = 'HHMMSS';
+
+strintimespec=datestr(d,formatOut);
+startspec=datestr(d(1),formatOut);
+secondsspec=str2num(strintimespec(:,[1:2]))*3600 + str2num(strintimespec(:,[3:4]))*60 + str2num(strintimespec(:,[5:6]));
+
+
+
+timeoffset = max(secondsspec) - max(seconds);
+secondsspec =secondsspec-timeoffset;
+
+seconds = seconds - secondsspec(1);
+secondsspec = secondsspec-secondsspec(1);
+
 
 
 
 
 
 figure(1)
-subplot(2,1,1)
-plot(allMov)
+plot(secondsspec, all)
 hold on
-plot(filt,'o')
-hold off
-
-subplot(2,1,2)
 plot(seconds, hum)
 hold on
 plot(seconds, alt/200, '.', LineWidth=.1)
 hold off
+
+

@@ -1,5 +1,5 @@
 opt = detectImportOptions('data_clean.txt');
-T = readtable('data_clean.txt', opt)
+T = readtable('data_clean.txt', opt);
 
 time = T.Var1;
 lat = T.Var2;
@@ -16,9 +16,9 @@ accy = T.Var19;
 accz = T.Var20;
 
 y=num2str(time)
-st=num2str(time(1))
-start=str2num(st(:,[1:2]))*3600 + str2num(st(:,[3:4]))*60 + str2num(st(:,[5:6]));
-seconds=str2num(y(:,[1:2]))*3600 + str2num(y(:,[3:4]))*60 + str2num(y(:,[5:6]))-start;
+startTime=num2str(time(1))
+startSeconds=str2num(startTime(:,[1:2]))*3600 + str2num(startTime(:,[3:4]))*60 + str2num(startTime(:,[5:6]));
+seconds=str2num(y(:,[1:2]))*3600 + str2num(y(:,[3:4]))*60 + str2num(y(:,[5:6]))-startSeconds;
 
 %sec=str2num(time(1:2))*3600+str2num(time(3:4))*60+str2num(time)
 
