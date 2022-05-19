@@ -6,7 +6,7 @@ T = readtable('data_clean.txt', opt);
 
 
 [b, a] = butter(5,0.1);
-accfilt = filtfilt(b, a, accmin);
+
 
 time = T.Var1;
 lat = T.Var2;
@@ -21,7 +21,7 @@ accmin = T.Var17;
 accx = T.Var18;
 accy = T.Var19;
 accz = T.Var20;
-
+accfilt = filtfilt(b, a, accmin);
 
 p=f(:,2)';
 q=s(:,2)';
@@ -64,12 +64,17 @@ ylabel("Nadmořská výška (km)")
 hold on
 
 ax2 = axes(t);
-plot(ax2, humsmooth, alt/1000, '-r',LineWidth=.1)
+tmplot = plot(ax2, tmp, alt/1000, ':r',LineWidth=.1);
+hold on
+humplot = plot(ax2, humsmooth, alt/1000, '-r',LineWidth=.1);
+legend([tmplot, humplot],'telpota', 'vlhkost','Location','east')
+ax2.XLim=([-40 50])
 ax2.XColor = 'r';
 ax2.XAxisLocation = 'top';
 ax2.Color = 'none';
 ax1.Box = 'off';
 ax2.Box = 'off';
 
-xlabel("Relativní vlhkost (%)")
+
+xlabel(" Teplota (°C), Relativní vlhkost (%)")
 hold off
