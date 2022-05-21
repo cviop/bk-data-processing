@@ -1,0 +1,24 @@
+clc; clear all;
+
+opt = detectImportOptions("Data/dvorak_polar.csv");
+P    = readtable("Data/dvorak_polar.csv",opt);
+P45  = readtable("Data/",opt);
+Pm45 = readtable("Data/dvorak_polar.csv",opt);
+
+ang=P.Var2;
+gain = P.Var3;
+
+max = max(P.Var3)
+min = min(P.Var3)
+
+u=1/ 10^(min/20)
+
+a=1/ 10^(P.Var3(P.Var2==45)/)
+b=P.Var3(P.Var2==-45)
+
+figure(1)
+plot(P.Var2, P.Var3)
+xlabel('úhel natočení (°)')
+ylabel('relativní výkon (dB)')
+grid on
+box off

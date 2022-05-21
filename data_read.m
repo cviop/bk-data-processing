@@ -1,5 +1,5 @@
-opt = detectImportOptions('data_clean.txt');
-T = readtable('data_clean.txt', opt);
+
+T = readtable('data_clean.txt', detectImportOptions('data_clean.txt'));
 
 time = T.Var1;
 lat = T.Var2;

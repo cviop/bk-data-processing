@@ -30,7 +30,7 @@ Y = 2022;
 M = 5;
 D = 4;
 
-T.Time = datetime(Y,M,D,H,MI,S);
+T.Time = datetime(Y,M,D,H,MI,S,'Locale','cz_CZ');
 
 
 
@@ -39,8 +39,8 @@ bsec=str2num(y(:,[1:2]))*3600 + str2num(y(:,[3:4]))*60 + str2num(y(:,[5:6]));
 
 
 
-dtf=datetime(f(:,[1]),'convertfrom', 'posixtime');
-dts=datetime(s(:,[1]),'convertfrom', 'posixtime');
+dtf=datetime(f(:,[1]),'convertfrom', 'posixtime','Locale','cz_CZ');
+dts=datetime(s(:,[1]),'convertfrom', 'posixtime','Locale','cz_CZ');
 
 
 
@@ -78,7 +78,7 @@ P.Properties.VariableNames = {'Time', 'Power_received', 'Power_filtered'};
 PH = [str2num(dtfstring(:,[1 2]))',str2num(dtsstring(:,[1 2]))']';
 PM = [str2num(dtfstring(:,[3 4]))',str2num(dtsstring(:,[3 4]))']';
 PS = [str2num(dtfstring(:,[5 6]))',str2num(dtsstring(:,[5 6]))']';
-P.Time = datetime(Y,M,D,PH,PM,PS);
+P.Time = datetime(Y,M,D,PH,PM,PS,'Locale','cz_CZ');
 
 P.Time =P.Time + seconds(-260);
 
@@ -98,9 +98,13 @@ baseTab.Properties.VariableNames = {'Time'};
 ggg=data.Power_received;
 
 Z = smooth(ggg,2);
+data.Alt = smooth(data.Alt,5);
+data.Humidity = smooth(data.Humidity,5);
 Z(Z>=0) = NaN;
-Zfil(Zfil>=0) = NaN;
 data.Power_received = Z;
+
+f
+
 
 cla reset
 
@@ -108,14 +112,14 @@ cla reset
 
 fg=figure(1);
 
-fg.Position = [100 100 800 500];
+
 t = tiledlayout(1,1);
 
 ax1 = axes(t);
 
-plot(ax1,bsec,alt/1000, '-b', 'LineWidth',1.5)
+plot(ax1,data.Time,data.Alt/1000, '-b', 'LineWidth',1.5)
 hold on
-plot(ax1,bsec,hum/10, ':b', 'LineWidth',1.5)
+plot(ax1,data.Time,data.Humidity/10, ':b', 'LineWidth',1.5)
 ax1.YColor = 'b';
 ax1.XColor = 'none';
 ylabel("nadmořská výška (km) & relativní vlhkost (10 %)")
@@ -138,8 +142,8 @@ ax3.Color = 'none';
 ax1.Box = 'off';
 
 ax3.Box = 'off';
-xlabel("čas (s)")
-
+xlabel("UTC (hh:mm)")
+fg.Position = [100 100 800 500];
 hold off
 
 %print -depsc alt_hum_p_p_filt

@@ -26,7 +26,7 @@ hold on
 A = patternCustom(ampl, theta, phi,'CoordinateSystem','polar','Slice','theta','SliceValue',0);
 C = patternCustom(ampl, theta, phi,'CoordinateSystem','polar','Slice','theta','SliceValue',45);
 D = patternCustom(ampl, theta, phi,'CoordinateSystem','polar','Slice','theta','SliceValue',90);
-
+set(gca,'Color','w')
 l=legend(gca);l.delete;
 
 legend(gca,'phi=-45 °','phi=0 °','phi=45 °','phi=90 °')

@@ -105,12 +105,9 @@ hold off
 
 
 figure(3)
-plot(N,alt/1000, '.b',LineWidth=1)
-ylim([0 2])
-xlabel('refraktivita (N)')
-ylabel('nadmořská výška (km)')
-grid on
-hold off
+ax3 = axes(t);
+plot(ax3,N,alt/1000, '-b',LineWidth=1)
+ax3.ylim=([0 2])
 
 
 
